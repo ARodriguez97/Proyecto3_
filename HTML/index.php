@@ -85,7 +85,7 @@ CoAuthor: Miguel
 									echo "<td>";
 									echo "Material: " . $recurso['nombre_material'] . "<br/>";
 									echo "Tipo Material: " . $recurso['tipo_material'] . "<br/>";
-									echo "Foto: ". "<img src='../IMG/" . $recurso['foto_material'] . "' width='200px'>" ."<br/>";
+									echo "<img src='../IMG/" . $recurso['foto_material'] . "' width='200px'>" ."<br/>";
 									echo "</td>";
 									if ($salto == 4 ){
 										echo "</tr></br>";
