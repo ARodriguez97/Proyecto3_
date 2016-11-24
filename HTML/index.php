@@ -1,5 +1,7 @@
 <!--
 Author: Alejandro
+CoAuthor: Ivan
+CoAuthor: Miguel
 -->
 <!DOCTYPE HTML>
 <html>
@@ -33,13 +35,13 @@ Author: Alejandro
 		 <div class="header">
 	       <div class="container header_top">
 				<div class="logo" style="width: 50%;">
-				  <a href=""><img src="images/logo.png" style="width:70%;" alt=""></a>
+				  <a href="index.html"><img src="images/logo.png" style="width:70%;" alt=""></a>
 				</div>
 		  		<div class="menu">
 
 					<ul class="nav" id="nav">
-					  <li class="current"><a href="">Inicio</a></li>
-            <li><a href="vermaterialesdisponibles.php">Reservas</a></li>
+					  <li class="current"><a href="index.html">Inicio</a></li>
+            <li><a href="reservas.html">Reservas</a></li>
             <li><a href="historial.html">Historial</a></li>
             <li><a href="incidencias.html">Incidencias</a></li>
             <li><a href="finalizarReserva.html">Finalizar Reserva</a></li>
@@ -52,85 +54,62 @@ Author: Alejandro
 			 </div>
 		</div>
 	<!--- //End-header---->
-  <div class="container banner">
-	 	<div class="row">
-			<form name="f1" action="index.php" method="GET" >
-			<?php
 
-				//realizamos la conexión
-					$conexion = mysqli_connect('localhost', 'root','', 'bd_alejandrorodriguez');
-					$acentos = mysqli_query($conexion, "SET NAMES 'utf8'");
+	<?php
 
-					if (!$conexion) {
-							echo "Error: No se pudo conectar a MySQL." . PHP_EOL;
-							echo "error de depuración: " . mysqli_connect_error() . PHP_EOL;
-							exit;
+		//realizamos la conexión
+			$conexion = mysqli_connect('localhost', 'root','', 'bd_bicis');
+			$acentos = mysqli_query($conexion, "SET NAMES 'utf8'");
+
+			if (!$conexion) {
+					echo "Error: No se pudo conectar a MySQL." . PHP_EOL;
+					echo "error de depuración: " . mysqli_connect_error() . PHP_EOL;
+					exit;
+			}
+			$sin_nada = 0 ;
+			extract($_REQUEST);
+
+				$sql = "SELECT id_reserva, nombre_material, estado_reserva AS Disponibilidad
+				FROM tbl_reserva
+				INNER JOIN tbl_material";
+				$reservas= mysqli_query($conexion, $sql);
+				if(mysqli_num_rows($reservas)>0){
+					echo "Número de reservas: " . mysqli_num_rows($reservas) . "<br/><br/>";
+					if ( $reserva['estado_reserva']== 1) {
+						while($reserva = mysqli_fetch_array($reservas)){
+							echo "Material: " . $reserva['nombre_material'] . "<br/>";
+							echo "estado_reserva: " . $reserva['estado_reserva'] . "<br/>";
+						}
 					}
-					$sin_nada = 0 ;
-					extract($_REQUEST);
-						echo "<table>";
-						$sql = "SELECT * FROM tbl_material ORDER BY id_material";
-						$recursos= mysqli_query($conexion, $sql);
-						$salto =0;
-						if(mysqli_num_rows($recursos)>0){
-								while($recurso = mysqli_fetch_array($recursos)){
+					else {
+					 	$sin_nada += 1;
+					}
+				}
 
-								   if ($recurso['estado_material'] == 'libre'){
-											$salto = $salto + 1;
-											if ($salto == 1 ){
-												echo "<tr>";
-											}
-											echo "<td style='padding: 30px;margin: 10px;box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.28);'>";
-											echo "Material: " . $recurso['nombre_material'] . "<br/>";
-											echo "Tipo Material: " . $recurso['tipo_material'] . "<br/>";
-											echo "<img src='../IMG/" . $recurso['foto_material'] . "' width='200px' height='150px'>" ."<br/><br/>";
-											echo "<a href='vermaterialesdisponibles.php' id='reservar' style='border:1px solid green ;margin-bottom:15px;padding:5px;color:green;' value='".$recurso['nombre_material'] ."'>RESERVAR</a></br></br>";
-											echo "</td>";
-											if ($salto == 4 ){
-												echo "</tr>";
-												$salto=0;
-											}
-										}
-										else{
-											$salto = $salto + 1;
-											if ($salto == 1 ){
-												echo "<tr>";
-											}
-											echo "<td style='padding: 30px;margin: 10px;box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.28);' >";
-											echo "Material: " . $recurso['nombre_material'] . "<br/>";
-											echo "Tipo Material: " . $recurso['tipo_material'] . "<br/>";
-											echo "<img src='../IMG/" . $recurso['foto_material'] . "' width='200px'height='150px'>" ."<br/><br/>";
-											echo "<span style='color:gray;padding:5px;margin-bottom:15px;' value='".$recurso['nombre_material'] ."'>Recurso no disponible</span></br></br>";
-											echo "</td> ";
-											if ($salto == 4 ){
-												echo "</tr>";
-												$salto=0;
-											}
-										}
-									}
-								}
-									$salto = $salto + 1;
-									if ($salto == 1 ){
-										echo "<tr>";
-									}
-									echo "<td>";
-									echo "Material: " . $recurso['nombre_material'] . "<br/>";
-									echo "Tipo Material: " . $recurso['tipo_material'] . "<br/>";
-									echo "<img src='../IMG/" . $recurso['foto_material'] . "' width='200px'>" ."<br/>";
-									echo "</td>";
-									if ($salto == 4 ){
-										echo "</tr></br>";
-										$salto=0;
-									}
-								}
-							}
-							else {
-								echo "No hay recursos para mostrar";
-							}
-							echo "</table>";
-				mysqli_close($conexion);
-				?>
-	 			<form name="f1" action="index.<?php  ?>" method="GET" onsubmit="return validar();">
+			
+			else{
+				//COMPROBAR QUE LOS DATOS DE LA BD NO ESTAN SIN
+				echo "<script language='javascript'>alert('NO SE HA RELLENADO NINGUNA CAMPO DEL FORMULARIO.');</script>";
+				echo "<h1 style='text-align:center;'> Todas las Bicis Encontradas </h1> <br/>";
+				$sql = "SELECT * FROM tbl_material ";
+				$materiales = mysqli_query($conexion, $sql);
+				if(mysqli_num_rows($materiales)>0){
+					echo "Número de reservas: " . mysqli_num_rows($reservas) . "<br/><br/>";
+					while($material = mysqli_fetch_array($materiales)){
+						echo "Nombre: " . $material['nombre_material'] . "<br/>";
+					}
+				}
+				else {
+					echo "No hay datos que mostrar!";
+				}
+			}
+
+    mysqli_close($conexion);
+		?>
+
+     <div class="container banner">
+	 	<div class="row">
+	 			<form name="f1" action="VerMaterialesDisponibles.php" method="GET" onsubmit="return validar();">
 
         <table style="border-spacing: 15px; border-collapse: inherit;" >
         <tr>
@@ -183,5 +162,30 @@ Author: Alejandro
 </tr>
 
         </table>
+
+	 				<span></span>
+
+	 	 </div>
+	 </div>
+	 <div class="main">
+	 	<div class='container content_top'>
+	 		<div class='row'>
+	 			<div class="col-md-4 flag_grid">
+	 			</div>
+	 		</div>
+	 	</div>
+	 	<div class='container content_middle'>
+	 		<div class="row">
+	 			<div class="col-md-8 middle_left">
+	 			</div>
+	 			<div class="col-md-4">
+
+
+							  <div class="clear"></div>
+						  </ul>
+
+							     </div>
+
+ </div>
 </body>
 </html>
