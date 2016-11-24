@@ -1,7 +1,5 @@
 <!--
 Author: Alejandro
-CoAuthor: Ivan
-CoAuthor: Miguel
 -->
 <!DOCTYPE HTML>
 <html>
@@ -35,13 +33,13 @@ CoAuthor: Miguel
 		 <div class="header">
 	       <div class="container header_top">
 				<div class="logo" style="width: 50%;">
-				  <a href="index.html"><img src="images/logo.png" style="width:70%;" alt=""></a>
+				  <a href=""><img src="images/logo.png" style="width:70%;" alt=""></a>
 				</div>
 		  		<div class="menu">
 
 					<ul class="nav" id="nav">
-					  <li class="current"><a href="index.html">Inicio</a></li>
-            <li><a href="reservas.html">Reservas</a></li>
+					  <li class="current"><a href="">Inicio</a></li>
+            <li><a href="vermaterialesdisponibles.php">Reservas</a></li>
             <li><a href="historial.html">Historial</a></li>
             <li><a href="incidencias.html">Incidencias</a></li>
             <li><a href="finalizarReserva.html">Finalizar Reserva</a></li>
@@ -54,114 +52,67 @@ CoAuthor: Miguel
 			 </div>
 		</div>
 	<!--- //End-header---->
-
-	<?php
-
-		//realizamos la conexión
-			$conexion = mysqli_connect('localhost', 'root','', 'bd_bicis');
-			$acentos = mysqli_query($conexion, "SET NAMES 'utf8'");
-
-			if (!$conexion) {
-					echo "Error: No se pudo conectar a MySQL." . PHP_EOL;
-					echo "error de depuración: " . mysqli_connect_error() . PHP_EOL;
-					exit;
-			}
-			$sin_nada = 0 ;
-			extract($_REQUEST);
-
-				$sql = "SELECT id_reserva, nombre_material, estado_reserva AS Disponibilidad
-				FROM tbl_reserva
-				INNER JOIN tbl_material";
-				$reservas= mysqli_query($conexion, $sql);
-				if(mysqli_num_rows($reservas)>0){
-					echo "Número de reservas: " . mysqli_num_rows($reservas) . "<br/><br/>";
-					if ( $reserva['estado_reserva']== 1) {
-						while($reserva = mysqli_fetch_array($reservas)){
-							echo "Material: " . $reserva['nombre_material'] . "<br/>";
-							echo "estado_reserva: " . $reserva['estado_reserva'] . "<br/>";
-						}
-					}
-					else {
-					 	$sin_nada += 1;
-					}
-				}
-
-			
-			else{
-				//COMPROBAR QUE LOS DATOS DE LA BD NO ESTAN SIN
-				echo "<script language='javascript'>alert('NO SE HA RELLENADO NINGUNA CAMPO DEL FORMULARIO.');</script>";
-				echo "<h1 style='text-align:center;'> Todas las Bicis Encontradas </h1> <br/>";
-				$sql = "SELECT * FROM tbl_material ";
-				$materiales = mysqli_query($conexion, $sql);
-				if(mysqli_num_rows($materiales)>0){
-					echo "Número de reservas: " . mysqli_num_rows($reservas) . "<br/><br/>";
-					while($material = mysqli_fetch_array($materiales)){
-						echo "Nombre: " . $material['nombre_material'] . "<br/>";
-					}
-				}
-				else {
-					echo "No hay datos que mostrar!";
-				}
-			}
-
-    mysqli_close($conexion);
-		?>
-
-     <div class="container banner">
+  <div class="container banner">
 	 	<div class="row">
-	 			<form name="f1" action="VerMaterialesDisponibles.php" method="GET" onsubmit="return validar();">
+			<form name="f1" action="index.php" method="GET" >
+			<?php
+				//realizamos la conexión
+					$conexion = mysqli_connect('localhost', 'root','', 'bd_alejandrorodriguez');
+					$acentos = mysqli_query($conexion, "SET NAMES 'utf8'");
 
-        <table style="border-spacing: 15px; border-collapse: inherit;" >
-        <tr>
-          <td>
-          <br/>
-             <strong><h2><u>Reserva:</u></h2><br/></strong>
-
- 	<strong>Tipo Recurso :    </strong>
-
-            <select name="material" id="material">
-            <optgroup label="Aulas">
-              <option value="Aula1" >Aula de Mates</option>
-              <option value="Aula2">Aula de Inglés</option>
-              <option value="Aula3">Aula de Castellano</option>
-              <option value="Aula4">Aula de Física</option>
-              <option value="Aula5" >Aula de Informática 1</option>
-              <option value="Aula6">Aula de Informática 2</option>
-              <option value="Aula7" >Sala de Reuniones</option>
-              <option value="Aula8">Despacho de Entrevistas 1</option>
-              <option value="Aula9" >Despacho de Entrevistas 2</option>
-              </optgroup>
-
-
-              <optgroup label="Portátiles">
-              <option value="Portatil1">Portátil 1</option>
-              <option value="Portatil2">Portátil 2</option>
-              <option value="Portatil3" >Portátil 3</option>
-              </optgroup>
-
-              <optgroup label="Móviles">
-              <option value="Movil1">Móvil 1</option>
-              <option value="Movil2">Móvil 2</option>
-              </optgroup>
-
-              <optgroup label="Otros">
-              <option value="Proyector">Proyector</option>
-              <option value="Carro">Carro</option>
-              </optgroup>
-
-             <a href="../HTML/VerMaterialesDisponibles.php" target="_self"> <input style  ="background-color:#90EE90 ; margin-left: 10px;" type="submit" name="reservar" value="Reservar"/><br/><br/></td>
-
-
-          </select><br/>
-    </td>
-</tr>
-<tr>
-<td></td>
-<br/>
-
-</tr>
-
-        </table>
+					if (!$conexion) {
+							echo "Error: No se pudo conectar a MySQL." . PHP_EOL;
+							echo "error de depuración: " . mysqli_connect_error() . PHP_EOL;
+							exit;
+					}
+					$sin_nada = 0 ;
+					extract($_REQUEST);
+						echo "<table>";
+						$sql = "SELECT * FROM tbl_material ORDER BY id_material";
+						$recursos= mysqli_query($conexion, $sql);
+						$salto =0;
+						if(mysqli_num_rows($recursos)>0){
+								while($recurso = mysqli_fetch_array($recursos)){
+								   if ($recurso['estado_material'] == 'libre'){
+											$salto = $salto + 1;
+											if ($salto == 1 ){
+												echo "<tr>";
+											}
+											echo "<td style='padding: 30px;margin: 10px;box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.28);'>";
+											echo "Material: " . $recurso['nombre_material'] . "<br/>";
+											echo "Tipo Material: " . $recurso['tipo_material'] . "<br/>";
+											echo "<img src='../IMG/" . $recurso['foto_material'] . "' width='200px' height='150px'>" ."<br/><br/>";
+											echo "<a href='vermaterialesdisponibles.php' id='reservar' style='border:1px solid green ;margin-bottom:15px;padding:5px;color:green;' value='".$recurso['nombre_material'] ."'>RESERVAR</a></br></br>";
+											echo "</td>";
+											if ($salto == 4 ){
+												echo "</tr>";
+												$salto=0;
+											}
+										}
+										else{
+											$salto = $salto + 1;
+											if ($salto == 1 ){
+												echo "<tr>";
+											}
+											echo "<td style='padding: 30px;margin: 10px;box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.28);' >";
+											echo "Material: " . $recurso['nombre_material'] . "<br/>";
+											echo "Tipo Material: " . $recurso['tipo_material'] . "<br/>";
+											echo "<img src='../IMG/" . $recurso['foto_material'] . "' width='200px'height='150px'>" ."<br/><br/>";
+											echo "<span style='color:gray;padding:5px;margin-bottom:15px;' value='".$recurso['nombre_material'] ."'>Recurso no disponible</span></br></br>";
+											echo "</td> ";
+											if ($salto == 4 ){
+												echo "</tr>";
+												$salto=0;
+											}
+										}
+									}
+								}
+							else {
+								echo "No hay recursos para mostrar";
+							}
+							echo "</table>";
+				mysqli_close($conexion);
+				?>
 
 	 				<span></span>
 
