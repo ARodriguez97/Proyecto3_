@@ -56,6 +56,7 @@ Author: Alejandro
 	 	<div class="row">
 			<form name="f1" action="index.php" method="GET" >
 			<?php
+
 				//realizamos la conexión
 					$conexion = mysqli_connect('localhost', 'root','', 'bd_alejandrorodriguez');
 					$acentos = mysqli_query($conexion, "SET NAMES 'utf8'");
@@ -73,6 +74,7 @@ Author: Alejandro
 						$salto =0;
 						if(mysqli_num_rows($recursos)>0){
 								while($recurso = mysqli_fetch_array($recursos)){
+
 								   if ($recurso['estado_material'] == 'libre'){
 											$salto = $salto + 1;
 											if ($salto == 1 ){
@@ -107,36 +109,79 @@ Author: Alejandro
 										}
 									}
 								}
+									$salto = $salto + 1;
+									if ($salto == 1 ){
+										echo "<tr>";
+									}
+									echo "<td>";
+									echo "Material: " . $recurso['nombre_material'] . "<br/>";
+									echo "Tipo Material: " . $recurso['tipo_material'] . "<br/>";
+									echo "<img src='../IMG/" . $recurso['foto_material'] . "' width='200px'>" ."<br/>";
+									echo "</td>";
+									if ($salto == 4 ){
+										echo "</tr></br>";
+										$salto=0;
+									}
+								}
+							}
 							else {
 								echo "No hay recursos para mostrar";
 							}
 							echo "</table>";
 				mysqli_close($conexion);
 				?>
+	 			<form name="f1" action="index.<?php  ?>" method="GET" onsubmit="return validar();">
 
-	 				<span></span>
+        <table style="border-spacing: 15px; border-collapse: inherit;" >
+        <tr>
+          <td>
+          <br/>
+             <strong><h2><u>Reserva:</u></h2><br/></strong>
 
-	 	 </div>
-	 </div>
-	 <div class="main">
-	 	<div class='container content_top'>
-	 		<div class='row'>
-	 			<div class="col-md-4 flag_grid">
-	 			</div>
-	 		</div>
-	 	</div>
-	 	<div class='container content_middle'>
-	 		<div class="row">
-	 			<div class="col-md-8 middle_left">
-	 			</div>
-	 			<div class="col-md-4">
+ 	<strong>Tipo Recurso :    </strong>
+
+            <select name="material" id="material">
+            <optgroup label="Aulas">
+              <option value="Aula1" >Aula de Mates</option>
+              <option value="Aula2">Aula de Inglés</option>
+              <option value="Aula3">Aula de Castellano</option>
+              <option value="Aula4">Aula de Física</option>
+              <option value="Aula5" >Aula de Informática 1</option>
+              <option value="Aula6">Aula de Informática 2</option>
+              <option value="Aula7" >Sala de Reuniones</option>
+              <option value="Aula8">Despacho de Entrevistas 1</option>
+              <option value="Aula9" >Despacho de Entrevistas 2</option>
+              </optgroup>
 
 
-							  <div class="clear"></div>
-						  </ul>
+              <optgroup label="Portátiles">
+              <option value="Portatil1">Portátil 1</option>
+              <option value="Portatil2">Portátil 2</option>
+              <option value="Portatil3" >Portátil 3</option>
+              </optgroup>
 
-							     </div>
+              <optgroup label="Móviles">
+              <option value="Movil1">Móvil 1</option>
+              <option value="Movil2">Móvil 2</option>
+              </optgroup>
 
- </div>
+              <optgroup label="Otros">
+              <option value="Proyector">Proyector</option>
+              <option value="Carro">Carro</option>
+              </optgroup>
+
+             <a href="../HTML/VerMaterialesDisponibles.php" target="_self"> <input style  ="background-color:#90EE90 ; margin-left: 10px;" type="submit" name="reservar" value="Reservar"/><br/><br/></td>
+
+
+          </select><br/>
+    </td>
+</tr>
+<tr>
+<td></td>
+<br/>
+
+</tr>
+
+        </table>
 </body>
 </html>

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Log-in</title>
 <?php
+	//comentario
 	//realizamos la conexión
 		$conexion = mysqli_connect('localhost', 'root','', 'bd_alejandrorodriguez');
 		$acentos = mysqli_query($conexion, "SET NAMES 'utf8'");
