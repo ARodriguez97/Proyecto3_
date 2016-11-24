@@ -1,6 +1,4 @@
-<!--
-Author: Alejandro
--->
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -27,22 +25,25 @@ Author: Alejandro
 			   </script>
 </head>
 <body>
+
+
+
    <!--- start-header---->
   <div class="wrapper">
     <!--start-header---->
 		 <div class="header">
 	       <div class="container header_top">
 				<div class="logo" style="width: 50%;">
-				  <a href=""><img src="images/logo.png" style="width:70%;" alt=""></a>
+				  <a href="index.php"><img src="images/logo.png" style="width:70%;" alt=""></a>
 				</div>
 		  		<div class="menu">
 
 					<ul class="nav" id="nav">
-					  <li class="current"><a href="">Inicio</a></li>
-            <li><a href="vermaterialesdisponibles.php">Reservas</a></li>
-            <li><a href="historial.html">Historial</a></li>
-            <li><a href="incidencias.html">Incidencias</a></li>
-            <li><a href="finalizarReserva.html">Finalizar Reserva</a></li>
+					  <li class="current"><a href="index.php">Inicio</a></li>
+					  <li><a href="reservas.html">Reservas</a></li>
+					  <li><a href="historial.html">Historial</a></li>
+					  <li><a href="incidencias.html">Incidencias</a></li>
+					  <li><a href="contact.html">Finalizar Reserva</a></li>
 					  <div class="clearfix"></div>
 					</ul>
 					<script type="text/javascript" src="js/responsive-nav.js"></script>
@@ -52,9 +53,11 @@ Author: Alejandro
 			 </div>
 		</div>
 	<!--- //End-header---->
-  <div class="container banner">
+
+
+
+     <div class="container banner">
 	 	<div class="row">
-			<form name="f1" action="index.php" method="GET" >
 			<?php
 
 				//realizamos la conexión
@@ -68,68 +71,11 @@ Author: Alejandro
 					}
 					$sin_nada = 0 ;
 					extract($_REQUEST);
-						echo "<table>";
-						$sql = "SELECT * FROM tbl_material ORDER BY id_material";
-						$recursos= mysqli_query($conexion, $sql);
-						$salto =0;
-						if(mysqli_num_rows($recursos)>0){
-								while($recurso = mysqli_fetch_array($recursos)){
-
-								   if ($recurso['estado_material'] == 'libre'){
-											$salto = $salto + 1;
-											if ($salto == 1 ){
-												echo "<tr>";
-											}
-											echo "<td style='padding: 30px;margin: 10px;box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.28);'>";
-											echo "Material: " . $recurso['nombre_material'] . "<br/>";
-											echo "Tipo Material: " . $recurso['tipo_material'] . "<br/>";
-											echo "<img src='../IMG/" . $recurso['foto_material'] . "' width='200px' height='150px'>" ."<br/><br/>";
-											echo "<a href='vermaterialesdisponibles.php' id='reservar' style='border:1px solid green ;margin-bottom:15px;padding:5px;color:green;' value='".$recurso['nombre_material'] ."'>RESERVAR</a></br></br>";
-											echo "</td>";
-											if ($salto == 4 ){
-												echo "</tr>";
-												$salto=0;
-											}
-										}
-										else{
-											$salto = $salto + 1;
-											if ($salto == 1 ){
-												echo "<tr>";
-											}
-											echo "<td style='padding: 30px;margin: 10px;box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.28);' >";
-											echo "Material: " . $recurso['nombre_material'] . "<br/>";
-											echo "Tipo Material: " . $recurso['tipo_material'] . "<br/>";
-											echo "<img src='../IMG/" . $recurso['foto_material'] . "' width='200px'height='150px'>" ."<br/><br/>";
-											echo "<span name='reservar' style='color:gray;padding:5px;margin-bottom:15px;' value='".$recurso['nombre_material'] ."'>Recurso no disponible</span></br></br>";
-											echo "</td> ";
-											if ($salto == 4 ){
-												echo "</tr>";
-												$salto=0;
-											}
-										}
-									}
-								}
-									$salto = $salto + 1;
-									if ($salto == 1 ){
-										echo "<tr>";
-									}
-									echo "<td>";
-									echo "Material: " . $recurso['nombre_material'] . "<br/>";
-									echo "Tipo Material: " . $recurso['tipo_material'] . "<br/>";
-									echo "<img src='../IMG/" . $recurso['foto_material'] . "' width='200px'>" ."<br/>";
-									echo "</td>";
-									if ($salto == 4 ){
-										echo "</tr></br>";
-										$salto=0;
-									}
-							
-							else {
-								echo "No hay recursos para mostrar";
-							}
-							echo "</table>";
-				mysqli_close($conexion);
+					$material = $_GET['reservar'];
+					echo $material;
+		    mysqli_close($conexion);
 				?>
-	 			<form name="f1" action="index.<?php  ?>" method="GET" onsubmit="return validar();">
+	 			<form name="f1" action="formulario_prueba.php" method="GET" onsubmit="return validar();">
 
         <table style="border-spacing: 15px; border-collapse: inherit;" >
         <tr>
@@ -169,7 +115,7 @@ Author: Alejandro
               <option value="Carro">Carro</option>
               </optgroup>
 
-             <a href="../HTML/VerMaterialesDisponibles.php" target="_self"> <input style  ="background-color:#90EE90 ; margin-left: 10px;" type="submit" name="reservar" value="Reservar"/><br/><br/></td>
+              <input style  ="background-color:#90EE90 ; margin-left: 10px;" type="submit" name="reservar" value="Reservar"/><br/><br/></td>
 
 
           </select><br/>
@@ -182,5 +128,30 @@ Author: Alejandro
 </tr>
 
         </table>
+
+	 				<span></span>
+
+	 	 </div>
+	 </div>
+	 <div class="main">
+	 	<div class='container content_top'>
+	 		<div class='row'>
+	 			<div class="col-md-4 flag_grid">
+	 			</div>
+	 		</div>
+	 	</div>
+	 	<div class='container content_middle'>
+	 		<div class="row">
+	 			<div class="col-md-8 middle_left">
+	 			</div>
+	 			<div class="col-md-4">
+
+
+							  <div class="clear"></div>
+						  </ul>
+
+							     </div>
+
+ </div>
 </body>
 </html>

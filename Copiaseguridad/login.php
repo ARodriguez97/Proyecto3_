@@ -5,7 +5,7 @@
   <title>Log-in</title>
 <?php
 	//realizamos la conexión
-		$conexion = mysqli_connect('localhost', 'root','', 'bd_educayaprende');
+		$conexion = mysqli_connect('localhost', 'root','', 'bd_alejandrorodriguez');
 		$acentos = mysqli_query($conexion, "SET NAMES 'utf8'");
 
 		if (!$conexion) {
@@ -19,7 +19,7 @@
 		$usuarios= mysqli_query($conexion, $sql);
 		echo "$sql";
 		if(mysqli_num_rows($usuarios)>0){
-			header('Location: ../HTML/index.html');
+			header('Location: HTML/index.php');
 		}
 		else{
 			header('Location: login.html');
